@@ -1,6 +1,7 @@
+
 #include <iostream>
-#include <stdlib.h>
-#include <time.h>
+
+#include "knuth_shuffle.h"
 
 void KnuthShuffle()
 {
@@ -30,7 +31,6 @@ void KnuthShuffle()
     std::cout << " " << arr[j] << " ";
   }
 }
-
 void BruteForce()
 {
   std::cout << "\n Brute Force Solution";
@@ -59,11 +59,4 @@ void BruteForce()
   {
     std::cout << " " << shuffarr[j] << " \n";
   }
-}
-
-int main(void)
-{
-  KnuthShuffle();
-  BruteForce();
-  return 0;
 }
