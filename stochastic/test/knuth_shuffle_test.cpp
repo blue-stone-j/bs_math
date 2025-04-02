@@ -5,6 +5,6 @@
 
 TEST(knuth_shuffle_test, test1)
 {
-  KnuthShuffle();
-  BruteForce();
+  math::stochastic::KnuthShuffle();
+  math::stochastic::BruteForce();
 }
