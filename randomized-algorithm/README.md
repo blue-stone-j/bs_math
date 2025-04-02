@@ -10,3 +10,7 @@ cmake ..
 make
 ./knuth_shuffle 
 ```
+
+### knuth-shuffle
+
+knuth-shuffle

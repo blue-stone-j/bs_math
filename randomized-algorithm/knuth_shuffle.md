@@ -1,3 +1,0 @@
-# knuth-shuffle
-knuth-shuffle
-
