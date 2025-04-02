@@ -2,7 +2,7 @@
 
 /install
 
-/cmake/cloud_sampleConfig.cmake
+/cmake/bmathConfig.cmake
 /include/global_definition.h
 
 .vscode

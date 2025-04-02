@@ -6,7 +6,7 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/README.md
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
   "${PROJECT_NAME}ConfigVersion.cmake"
-  VERSION ${BS_MATH_VERSION}
+  VERSION ${BMATH_VERSION}
   COMPATIBILITY SameMajorVersion)
 
 configure_file(
