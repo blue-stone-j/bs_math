@@ -1,31 +1,27 @@
-project(randomized_algorithm)
 
-# include_directories(include)
-
-set(MODULE_NAME randomized_algorithm)
+set(module_name stochastic)
 
 # Set the source folder
-set(SOURCE_DIR ./src)
-message(STATUS "Source directory: ${SOURCE_DIR}")
+set(source_dir ./src)
 # Get all .cpp files in the source folder
-file(GLOB_RECURSE CPP_FILES ${SOURCE_DIR}/*.cpp)
+file(GLOB_RECURSE cpp_files ${source_dir}/*.cpp)
 
 
-add_library(${MODULE_NAME} SHARED ${CPP_FILES})
-target_link_libraries(${MODULE_NAME} ${common_lib})
-target_include_directories(${MODULE_NAME} PUBLIC ./include)
-install(TARGETS ${MODULE_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
+add_library(${module_name} SHARED ${cpp_files})
+target_link_libraries(${module_name} ${common_lib})
+target_include_directories(${module_name} PUBLIC ./include)
+install(TARGETS ${module_name} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
 
 
 if(BUILD_TEST)
-  foreach(CPP_FILE ${CPP_FILES})
+  foreach(cpp_file ${cpp_files})
     # Get the filename without extension
-    get_filename_component(FILENAME_NO_EXT ${CPP_FILE} NAME_WE)
+    get_filename_component(function_name ${cpp_file} NAME_WE)
 
-    add_executable(${FILENAME_NO_EXT}_test test/${FILENAME_NO_EXT}_test.cpp src/${FILENAME_NO_EXT}.cpp)
-    target_link_libraries(${FILENAME_NO_EXT}_test ${common_lib} gtest gtest_main)
-    target_include_directories(${FILENAME_NO_EXT}_test PUBLIC ./include)
+    add_executable(${function_name}_test test/${function_name}_test.cpp src/${function_name}.cpp)
+    target_link_libraries(${function_name}_test ${common_lib} gtest gtest_main)
+    target_include_directories(${function_name}_test PUBLIC ./include)
     # Register test
-    add_test(NAME ${FILENAME_NO_EXT}Test COMMAND ${FILENAME_NO_EXT}_test)
+    add_test(NAME ${function_name}Test COMMAND ${function_name}_test)
   endforeach()
 endif()

@@ -1,5 +1,5 @@
-#ifndef KNUTH_SHUFFLE_H
-#define KNUTH_SHUFFLE_H
+#ifndef STOCHASTIC_KNUTH_SHUFFLE_H
+#define STOCHASTIC_KNUTH_SHUFFLE_H
 
 namespace math
 {
