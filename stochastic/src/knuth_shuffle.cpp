@@ -2,7 +2,10 @@
 #include <iostream>
 
 #include "knuth_shuffle.h"
-
+namespace math
+{
+namespace stochastic
+{
 void KnuthShuffle()
 {
   std::cout << "\n KnuthShuffle Solution";
@@ -60,3 +63,5 @@ void BruteForce()
     std::cout << " " << shuffarr[j] << " \n";
   }
 }
+} // namespace stochastic
+} // namespace math

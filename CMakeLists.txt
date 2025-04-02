@@ -17,7 +17,7 @@ endif()
 
 enable_testing()
 
-add_subdirectory(randomized-algorithm)
+add_subdirectory(stochastic)
 
 include(cmake/global_definition.cmake)
 
