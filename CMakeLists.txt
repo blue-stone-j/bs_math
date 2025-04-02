@@ -17,6 +17,7 @@ endif()
 
 enable_testing()
 
+add_subdirectory(statistics)
 add_subdirectory(stochastic)
 
 include(cmake/global_definition.cmake)
