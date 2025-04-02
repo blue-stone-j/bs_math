@@ -13,14 +13,14 @@ echo -e "${BLUE}Start working.${NC}"
 
 # set variable
 echo -e "${BLUE}Start setting variables.${NC}"
-PROJECT_NAME=bs_math
+PROJECT_NAME=bmath
 PROJECT_NAME_U=$(echo "$PROJECT_NAME" | tr '[:lower:]' '[:upper:]')
 PROJECT_NAME_L=$(echo "$PROJECT_NAME" | tr '[:upper:]' '[:lower:]')
 
-BS_MATH_VERSION_MAJOR=1
-BS_MATH_VERSION_MINOR=0
-BS_MATH_VERSION_PATCH=0
-BS_MATH_VERSION=${BS_MATH_VERSION_MAJOR}.${BS_MATH_VERSION_MINOR}.${BS_MATH_VERSION_PATCH}
+BMATH_VERSION_MAJOR=1
+BMATH_VERSION_MINOR=0
+BMATH_VERSION_PATCH=0
+BMATH_VERSION=${BMATH_VERSION_MAJOR}.${BMATH_VERSION_MINOR}.${BMATH_VERSION_PATCH}
 
 BUILD_TEST=TRUE
 
@@ -31,7 +31,7 @@ echo -e "${GREEN}Set variables completed.${NC}"
 echo -e "${BLUE}Start building.${NC}"
 mkdir -p build &&
 cd build &&
-cmake -DBS_MATH_VERSION=${BS_MATH_VERSION} \
+cmake -DBMATH_VERSION=${BMATH_VERSION} \
       -DCMAKE_INSTALL_PREFIX=$CMAKE_INSTALL_PREFIX \
       -DBUILD_TEST=$BUILD_TEST \
       ..
