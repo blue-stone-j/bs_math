@@ -1,8 +1,10 @@
+
+#include <gtest/gtest.h>
+
 #include "knuth_shuffle.h"
 
-int main(void)
+TEST(knuth_shuffle_test, test1)
 {
   KnuthShuffle();
   BruteForce();
-  return 0;
 }
