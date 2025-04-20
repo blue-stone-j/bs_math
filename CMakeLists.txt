@@ -19,6 +19,7 @@ enable_testing()
 
 add_subdirectory(statistics)
 add_subdirectory(stochastic)
+add_subdirectory(geometry)
 
 include(cmake/global_definition.cmake)
 
