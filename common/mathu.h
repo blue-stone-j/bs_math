@@ -3,9 +3,7 @@
 
 #include <Eigen/Dense>
 
-#include "lib3rd/cpp_header.h"
-
-namespace MyMath
+namespace bmath
 {
 /* constant */
 constexpr static double degTorad = M_PI / 180, radTodeg = 180 / M_PI;
@@ -404,6 +402,6 @@ static int transformPlane(const PlaneModel &model_in, PlaneModel &model_out,
 
   return 0;
 }
-} // namespace MyMath
+} // namespace bmath
 
 #endif

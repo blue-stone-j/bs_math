@@ -3,6 +3,12 @@
 
 #include "common.h"
 
-double calculateTriangleArea(const Point &A, const Point &B, const Point &C);
+namespace bmath
+{
+namespace geometry
+{
+double calculateTriangleArea(const PointXY &A, const PointXY &B, const PointXY &C);
+}
+} // namespace bmath
 
 #endif
