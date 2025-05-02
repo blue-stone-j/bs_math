@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "variance.h"
+#include "statistics/variance/variance.h"
 
 TEST(variance_test, variance)
 {

@@ -25,6 +25,18 @@ constexpr static double degTorad = M_PI / 180, radTodeg = 180 / M_PI;
 //           + cos(pitch) * cos(roll) * curPlane[2]
 //           + z;
 
+
+// Normalize a 3D vector
+template <typename Scalar>
+void normalize(Scalar v[3])
+{
+  double norm = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+  for (int i = 0; i < 3; i++)
+  {
+    v[i] /= norm;
+  }
+}
+
 /******** vector6d(xyzrpy)  aff3d ********/
 template <typename S1, typename S2>
 void vec6D2Aff(std::vector<S1> poseV6,
@@ -123,16 +135,14 @@ static Eigen::Quaternion<S1> vec2Quat(const Eigen::Matrix<S2, 3, 1> &vec)
 }
 
 template <typename S1>
-static void
-enforceSymmetry(Eigen::Matrix<S1, Eigen::Dynamic, Eigen::Dynamic> &mat)
+static void enforceSymmetry(Eigen::Matrix<S1, Eigen::Dynamic, Eigen::Dynamic> &mat)
 {
   // 自己对自己进行赋值的时候，先把结果存到临时变量,避免Eigen中的混叠（aliasing）问题
   mat = 0.5 * (mat + mat.transpose()).eval();
 }
 
 template <typename Derived>
-static Eigen::Matrix<typename Derived::Scalar, 3, 3>
-rpy2R(const Eigen::MatrixBase<Derived> &rpy)
+static Eigen::Matrix<typename Derived::Scalar, 3, 3> rpy2R(const Eigen::MatrixBase<Derived> &rpy)
 {
   typedef typename Derived::Scalar Scalar_t;
 
@@ -158,11 +168,13 @@ static Eigen::Matrix<S1, 3, 1> R2rpy(const Eigen::Matrix3d &R)
   rpy(2) = atan2(R(1, 0) / cos(rpy(1)), R(0, 0) / cos(rpy(1))); // yaw
   return rpy;
 }
+
 template <typename S1, typename S2>
 static Eigen::Matrix<S1, 3, 1> Quternion2rpy(const Eigen::Quaternion<S2> &Q)
 {
   return R2rpy(Q.toRotationMatrix());
 }
+
 template <typename S1, typename S2>
 static Eigen::Quaternion<S1> rpy2Quat(const Eigen::Matrix<S2, 3, 1> &rpy)
 {
@@ -183,6 +195,7 @@ static Eigen::Quaternion<S1> rpy2Quat(const Eigen::Matrix<S2, 3, 1> &rpy)
   Q.normalized();
   return Q;
 }
+
 template <typename S1, typename S2>
 static Eigen::Matrix<S1, 3, 1>
 QuaternionToEuler(Eigen::Quaternion<S2, 0> quat)
@@ -326,6 +339,7 @@ Rleft(const Eigen::MatrixBase<Derived> axis)
   double c                        = (1 - cos(theta)) / theta; //???
   ans                             = s * Eigen::Matrix<Scalar_t, 3, 3>::Identity() + (1 - s) * a * a.transpose() + c * skew(a);
 }
+
 template <typename S1, typename S2>
 static Eigen::Matrix<S1, 3, 3> Rinvleft(const Eigen::Matrix<S2, 3, 1> axis)
 {
@@ -365,43 +379,14 @@ struct LineModel
 {
   double a = 0, b = 0, c = 0, x = 0, y = 0, z = 0;
 };
-static int transformLine(const LineModel &model_in, LineModel &model_out,
-                         const Eigen::Affine3d &pose)
-{
-  Eigen::Vector4d pos_in(model_in.x, model_in.y, model_in.z, 1), pos_out;
-  pos_out     = pose.matrix() * pos_in;
-  model_out.x = pos_out(0);
-  model_out.y = pos_out(1);
-  model_out.z = pos_out(2);
-
-  Eigen::Vector3d rot_in(model_in.a, model_in.b, model_in.c), rot_out;
-  rot_out     = pose.matrix().block<3, 3>(0, 0) * rot_in;
-  model_out.a = rot_out(0);
-  model_out.b = rot_out(1);
-  model_out.c = rot_out(2);
-
-  return 0;
-}
+int transformLine(const LineModel &model_in, LineModel &model_out, const Eigen::Affine3d &pose);
 
 struct PlaneModel
 {
   double a = 0, b = 0, c = 1, d = 0;
 };
 
-static int transformPlane(const PlaneModel &model_in, PlaneModel &model_out,
-                          const Eigen::Affine3d &pose)
-{
-  Eigen::Matrix3d R_inv = pose.matrix().block<3, 3>(0, 0).transpose();
-  Eigen::Vector3d rot_in(model_in.a, model_in.b, model_in.c);
-  Eigen::Vector3d rot_out = R_inv * rot_in;
-
-  model_out.a = rot_out(0);
-  model_out.b = rot_out(1);
-  model_out.c = rot_out(2);
-  model_out.d = model_in.d - rot_out.dot(pose.matrix().block<3, 1>(0, 3));
-
-  return 0;
-}
+int transformPlane(const PlaneModel &model_in, PlaneModel &model_out, const Eigen::Affine3d &pose);
 } // namespace bmath
 
 #endif

@@ -2,7 +2,7 @@
 #ifndef PLANE_H
 #define PLANE_H
 
-#include "common.h"
+#include "geometry/common.h"
 
 namespace bmath
 {

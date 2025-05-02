@@ -41,7 +41,7 @@ if [ ! $? -eq 0 ]; then
   exit
 fi
 
-cmake --build . --target install
+cmake --build . --target install -j6 --config Release
 
 if [ ! $? -eq 0 ]; then
   echo -e "${RED}Failed to build.${NC}"

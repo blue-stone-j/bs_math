@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include <iostream>
-#include "triangle.h"
+#include "geometry/triangle/triangle.h"
 
 TEST(triangle_test, test1)
 {

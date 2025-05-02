@@ -1,7 +1,7 @@
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
 
-#include "common.h"
+#include "geometry/common.h"
 
 namespace bmath
 {

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include <iostream>
-#include "plane.h"
+#include "geometry/plane/plane.h"
 
 TEST(plane_test, test1)
 {
