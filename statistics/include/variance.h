@@ -9,6 +9,8 @@ namespace math
 namespace statistics
 {
 float computeVariance(const Eigen::VectorXf &vec);
+
+double computeCovariance(const std::vector<double> &X, const std::vector<double> &Y);
 } // namespace statistics
 } // namespace math
 
