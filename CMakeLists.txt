@@ -44,7 +44,6 @@ function(compile_module module_name module_include module_lib)
     set(function_names "")
     set(function_files "")
     get_functions(${CMAKE_CURRENT_SOURCE_DIR} function_names function_files)
-    message(STATUS "module_lib: ${module_lib}")
 
     add_library(${module_name} SHARED ${function_files})
     target_link_libraries(${module_name} ${module_lib})
