@@ -3,7 +3,7 @@
 /install
 
 /cmake/bmathConfig.cmake
-/include/global_definition.h
+/common/global_definition.h
 
 .vscode
 .cache

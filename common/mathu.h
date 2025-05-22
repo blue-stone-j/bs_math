@@ -6,7 +6,7 @@
 namespace bmath
 {
 /* constant */
-constexpr static double degTorad = M_PI / 180, radTodeg = 180 / M_PI;
+constexpr static double deg2rad = M_PI / 180, rad2deg = 180 / M_PI;
 
 // auto p1 = cos(yaw) * cos(pitch) * curPlane[0]
 //           + (cos(yaw) * sin(pitch) * sin(roll) - sin(yaw) * cos(roll)) *
@@ -259,13 +259,13 @@ deltaQ(const Eigen::MatrixBase<Derived> &theta)
 template <class T>
 static T rad2deg(const T &radians)
 {
-  return radians * radTodeg;
+  return radians * rad2deg;
 }
 
 template <class T>
 static T deg2rad(const T &degrees)
 {
-  return degrees * degTorad;
+  return degrees * deg2rad;
 }
 
 template <class Derived>
