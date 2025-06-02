@@ -11,23 +11,42 @@ Eigen::Vector3d normalize(const Eigen::Vector3d &v)
   return v / v.norm();
 }
 
-// Compute rotation matrix Rx(roll) * Ry(pitch)
-Eigen::Matrix3d rotationMatrix(double pitch, double roll)
+Eigen::Matrix3d eulerToRotationMatrix(double roll, double pitch, double yaw)
 {
-  double cp = cos(pitch), sp = sin(pitch);
-  double cr = cos(roll), sr = sin(roll);
+  double cr = std::cos(roll);
+  double sr = std::sin(roll);
+  double cp = std::cos(pitch);
+  double sp = std::sin(pitch);
+  double cy = std::cos(yaw);
+  double sy = std::sin(yaw);
 
   Eigen::Matrix3d R;
-  R << cp, 0, sp,
-      sr * sp, cr, -sr * cp,
-      -cr * sp, sr, cr * cp;
+  R << cy * cp, cy * sp * sr - sy * cr, cy * sp * cr + sy * sr,
+      sy * cp, sy * sp * sr + cy * cr, sy * sp * cr - cy * sr,
+      -sp, cp * sr, cp * cr;
+  return R;
+}
+
+// Compute rotation matrix Rx(roll) * Ry(pitch)
+Eigen::Matrix3d rotationMatrix(double roll, double pitch)
+{
+  double ct = std::cos(pitch);
+  double st = std::sin(pitch);
+  double cr = std::cos(roll);
+  double sr = std::sin(roll);
+
+  Eigen::Matrix3d R;
+  R << ct, st * sr, st * cr,
+      0, cr, -sr,
+      -st, ct * sr, ct * cr;
+
   return R;
 }
 
 // Compute cost function: squared error
-double costFunction(const Eigen::Vector3d &v1, const Eigen::Vector3d &v2, double pitch, double roll)
+double costFunction(const Eigen::Vector3d &v1, const Eigen::Vector3d &v2, double roll, double pitch)
 {
-  Eigen::Matrix3d R    = rotationMatrix(pitch, roll);
+  Eigen::Matrix3d R    = rotationMatrix(roll, pitch);
   Eigen::Vector3d diff = R * v1 - v2;
   return diff.squaredNorm();
 }

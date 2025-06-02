@@ -21,9 +21,9 @@ TEST(triangle_test, test1)
     // Finite difference gradient
     double h = 1e-6;
 
-    double f       = bmath::geometry::costFunction(v1, v2, pitch, roll);
-    double f_pitch = bmath::geometry::costFunction(v1, v2, pitch + h, roll);
-    double f_roll  = bmath::geometry::costFunction(v1, v2, pitch, roll + h);
+    double f       = bmath::geometry::costFunction(v1, v2, roll, pitch);
+    double f_pitch = bmath::geometry::costFunction(v1, v2, roll, pitch + h);
+    double f_roll  = bmath::geometry::costFunction(v1, v2, roll + h, pitch);
 
     double grad_pitch = (f_pitch - f) / h;
     double grad_roll  = (f_roll - f) / h;
@@ -40,7 +40,7 @@ TEST(triangle_test, test1)
   std::cout << "Final pitch (deg): " << pitch * 180.0 / M_PI << ", roll (deg): " << roll * 180.0 / M_PI << std::endl;
 
   // Check final rotation
-  Eigen::Matrix3d R      = bmath::geometry::rotationMatrix(pitch, roll);
+  Eigen::Matrix3d R      = bmath::geometry::rotationMatrix(roll, pitch);
   Eigen::Vector3d result = R * v1;
   std::cout << "Rotated v1: " << result.transpose() << std::endl;
   std::cout << "Target v2:  " << v2.transpose() << std::endl;
