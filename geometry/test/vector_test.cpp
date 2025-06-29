@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 
-#include <iostream>
 #include "geometry/vector/vector.h"
 
 TEST(vector_test, test1)
