@@ -18,6 +18,8 @@ Eigen::Matrix3d rotationMatrix(double roll, double pitch);
 
 // Compute cost function: squared error
 double costFunction(const Eigen::Vector3d &v1, const Eigen::Vector3d &v2, double roll, double pitch);
+
+Eigen::Matrix3d quaternion_to_rotation_matrix(const Eigen::Quaterniond &q);
 } // namespace geometry
 } // namespace bmath
 

@@ -43,6 +43,15 @@ Eigen::Matrix3d rotationMatrix(double roll, double pitch)
   return R;
 }
 
+Eigen::Matrix3d quaternion_to_rotation_matrix(const Eigen::Quaterniond &q)
+{
+  Eigen::Matrix3d R;
+  R << 1 - 2 * (q.y() * q.y() + q.z() * q.z()), 2 * (q.x() * q.y() - q.z() * q.w()), 2 * (q.x() * q.z() + q.y() * q.w()),
+      2 * (q.x() * q.y() + q.z() * q.w()), 1 - 2 * (q.x() * q.x() + q.z() * q.z()), 2 * (q.y() * q.z() - q.x() * q.w()),
+      2 * (q.x() * q.z() - q.y() * q.w()), 2 * (q.y() * q.z() + q.x() * q.w()), 1 - 2 * (q.x() * q.x() + q.y() * q.y());
+  return R;
+}
+
 // Compute cost function: squared error
 double costFunction(const Eigen::Vector3d &v1, const Eigen::Vector3d &v2, double roll, double pitch)
 {
