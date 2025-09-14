@@ -40,8 +40,7 @@ void normalize(Scalar v[3])
 
 /******** vector6d(xyzrpy)  aff3d ********/
 template <typename S1, typename S2>
-void vec6D2Aff(std::vector<S1> poseV6,
-               Eigen::Transform<S2, 3, Eigen::Affine> &poseA3)
+void vec6D2Aff(std::vector<S1> poseV6, Eigen::Transform<S2, 3, Eigen::Affine> &poseA3)
 {
   // cos(yaw)*cos(pitch) cos(yaw)*sin(pitch)*sin(roll)-sin(yaw)*cos(roll)
   // sin(yaw)*sin(roll)+cos(yaw)*sin(pitch)*cos(roll) sin(yaw)*cos(pitch)
@@ -87,8 +86,7 @@ void vec6D2Aff(std::vector<S1> poseV6,
 }
 
 template <typename S1, typename S2>
-static void aff2Pose6D(Eigen::Transform<S1, 3, Eigen::Affine> &poseA3,
-                       std::vector<S2> &poseV6)
+static void aff2Pose6D(Eigen::Transform<S1, 3, Eigen::Affine> &poseA3, std::vector<S2> &poseV6)
 {
   poseV6[0] = poseA3(0, 3);
   poseV6[1] = poseA3(1, 3);
@@ -98,10 +96,10 @@ static void aff2Pose6D(Eigen::Transform<S1, 3, Eigen::Affine> &poseA3,
   poseV6[5] = atan2(poseA3(1, 0), poseA3(0, 0));
 }
 
-template <typename S1, typename S2, typename S3>
-static Eigen::Quaternion<S1> axis2Quat(const Eigen::Matrix<S2, 3, 1> &axis, S3 theta)
+template <typename Scarlar>
+static Eigen::Quaternion<Scarlar> axis2Quat(const Eigen::Matrix<Scarlar, 3, 1> &axis, Scarlar theta)
 {
-  Eigen::Quaternion<S1> q;
+  Eigen::Quaternion<Scarlar> q;
 
   if (theta < 1e-10)
   {
@@ -118,11 +116,12 @@ static Eigen::Quaternion<S1> axis2Quat(const Eigen::Matrix<S2, 3, 1> &axis, S3 t
 
   return q;
 }
-template <typename S1, typename S2, typename S3>
-static Eigen::Quaternion<S1> vec2Quat(const Eigen::Matrix<S2, 3, 1> &vec)
+
+template <typename Scarlar>
+static Eigen::Quaternion<Scarlar> vec2Quat(const Eigen::Matrix<Scarlar, 3, 1> &vec)
 {
-  Eigen::Quaternion<S1> q;
-  S3 theta = vec.norm();
+  Eigen::Quaternion<Scarlar> q;
+  Scarlar theta = vec.norm();
 
   if (theta < 1e-10)
   {
@@ -135,8 +134,8 @@ static Eigen::Quaternion<S1> vec2Quat(const Eigen::Matrix<S2, 3, 1> &vec)
   return axis2Quat(tmp, theta);
 }
 
-template <typename S1>
-static void enforceSymmetry(Eigen::Matrix<S1, Eigen::Dynamic, Eigen::Dynamic> &mat)
+template <typename Scarlar>
+static void enforceSymmetry(Eigen::Matrix<Scarlar, Eigen::Dynamic, Eigen::Dynamic> &mat)
 {
   // 自己对自己进行赋值的时候，先把结果存到临时变量,避免Eigen中的混叠（aliasing）问题
   mat = 0.5 * (mat + mat.transpose()).eval();
@@ -160,35 +159,36 @@ static Eigen::Matrix<typename Derived::Scalar, 3, 3> rpy2R(const Eigen::MatrixBa
 
   return Rz * Ry * Rx;
 }
-template <typename S1, typename S2>
-static Eigen::Matrix<S1, 3, 1> R2rpy(const Eigen::Matrix3d &R)
+
+template <typename Scarlar>
+static Eigen::Matrix<Scarlar, 3, 1> R2rpy(const Eigen::Matrix<Scarlar, 3, 3> &R)
 {
-  Eigen::Matrix<S1, 3, 1> rpy;
+  Eigen::Matrix<Scarlar, 3, 1> rpy;
   rpy(1) = atan2(-R(2, 0), sqrt(R(2, 1) * R(2, 1) + R(2, 2) * R(2, 2)));
   rpy(0) = atan2(R(2, 1) / cos(rpy(1)), R(2, 2) / cos(rpy(1))); // roll
   rpy(2) = atan2(R(1, 0) / cos(rpy(1)), R(0, 0) / cos(rpy(1))); // yaw
   return rpy;
 }
 
-template <typename S1, typename S2>
-static Eigen::Matrix<S1, 3, 1> Quternion2rpy(const Eigen::Quaternion<S2> &Q)
+template <typename Scarlar>
+static Eigen::Matrix<Scarlar, 3, 1> Quaternion2rpy(const Eigen::Quaternion<Scarlar> &Q)
 {
   return R2rpy(Q.toRotationMatrix());
 }
 
-template <typename S1, typename S2>
-static Eigen::Quaternion<S1> rpy2Quat(const Eigen::Matrix<S2, 3, 1> &rpy)
+template <typename Scarlar>
+static Eigen::Quaternion<Scarlar> rpy2Quat(const Eigen::Matrix<Scarlar, 3, 1> &rpy)
 {
-  double halfYaw   = double(rpy(2)) * double(0.5);
-  double halfPitch = double(rpy(1)) * double(0.5);
-  double halfRoll  = double(rpy(0)) * double(0.5);
-  double cosYaw    = cos(halfYaw);
-  double sinYaw    = sin(halfYaw);
-  double cosPitch  = cos(halfPitch);
-  double sinPitch  = sin(halfPitch);
-  double cosRoll   = cos(halfRoll);
-  double sinRoll   = sin(halfRoll);
-  Eigen::Quaternion<S1> Q;
+  Scarlar halfYaw   = rpy(2) * Scarlar(0.5);
+  Scarlar halfPitch = rpy(1) * Scarlar(0.5);
+  Scarlar halfRoll  = rpy(0) * Scarlar(0.5);
+  Scarlar cosYaw    = cos(halfYaw);
+  Scarlar sinYaw    = sin(halfYaw);
+  Scarlar cosPitch  = cos(halfPitch);
+  Scarlar sinPitch  = sin(halfPitch);
+  Scarlar cosRoll   = cos(halfRoll);
+  Scarlar sinRoll   = sin(halfRoll);
+  Eigen::Quaternion<Scarlar> Q;
   Q.x() = sinRoll * cosPitch * cosYaw - cosRoll * sinPitch * sinYaw;
   Q.y() = cosRoll * sinPitch * cosYaw + sinRoll * cosPitch * sinYaw;
   Q.z() = cosRoll * cosPitch * sinYaw - sinRoll * sinPitch * cosYaw;
@@ -197,24 +197,22 @@ static Eigen::Quaternion<S1> rpy2Quat(const Eigen::Matrix<S2, 3, 1> &rpy)
   return Q;
 }
 
-template <typename S1, typename S2>
-static Eigen::Matrix<S1, 3, 1>
-QuaternionToEuler(Eigen::Quaternion<S2, 0> quat)
+template <typename Scarlar>
+static Eigen::Matrix<Scarlar, 3, 1> QuaternionToEuler(Eigen::Quaternion<Scarlar, 0> quat)
 {
-  double roll, yaw, pitch;
-  double qw = quat.w(), qx = quat.x(), qy = quat.y(), qz = quat.z();
+  Scarlar roll, yaw, pitch;
+  Scarlar qw = quat.w(), qx = quat.x(), qy = quat.y(), qz = quat.z();
   yaw   = atan2f(2.f * (qw * qz + qx * qy), 1 - 2 * (qz * qz + qx * qx)); // Z
   roll  = asinf(2.f * (qw * qx - qy * qz));                               // Y
   pitch = atan2f(2.f * (qw * qy + qz * qx), 1 - 2 * (qy * qy + qx * qx)); // X
 
-  return Eigen::Matrix<S1, 3, 1>(roll, pitch, yaw);
+  return Eigen::Matrix<Scarlar, 3, 1>(roll, pitch, yaw);
 }
 
 /********  ???  ********/
 // 向量的反对称阵
 template <typename Derived>
-static Eigen::Matrix<typename Derived::Scalar, 3, 3>
-skew(const Eigen::MatrixBase<Derived> &q)
+static Eigen::Matrix<typename Derived::Scalar, 3, 3> skew(const Eigen::MatrixBase<Derived> &q)
 {
   Eigen::Matrix<typename Derived::Scalar, 3, 3> ans;
   ans << typename Derived::Scalar(0), -q(2), q(1), q(2),
@@ -231,8 +229,7 @@ skew(const Eigen::MatrixBase<Derived> &q)
 
 template <typename Derived>
 // ensure rotate in same direction???
-static Eigen::Quaternion<typename Derived::Scalar>
-positify(const Eigen::QuaternionBase<Derived> &q)
+static Eigen::Quaternion<typename Derived::Scalar> positify(const Eigen::QuaternionBase<Derived> &q)
 {
   // printf("a: %f %f %f %f", q.w(), q.x(), q.y(), q.z());
   Eigen::Quaternion<typename Derived::Scalar> p(-q.w(), -q.x(), -q.y(), -q.z()); // useless code???
@@ -243,8 +240,7 @@ positify(const Eigen::QuaternionBase<Derived> &q)
 
 //???
 template <typename Derived>
-static Eigen::Quaternion<typename Derived::Scalar>
-deltaQ(const Eigen::MatrixBase<Derived> &theta)
+static Eigen::Quaternion<typename Derived::Scalar> deltaQ(const Eigen::MatrixBase<Derived> &theta)
 {
   typedef typename Derived::Scalar Scalar_t;
   Eigen::Quaternion<Scalar_t> dq;
@@ -270,25 +266,21 @@ static T degToRad(const T &degrees)
 }
 
 template <class Derived>
-static Eigen::MatrixBase<Derived>
-radToDeg(const Eigen::MatrixBase<Derived> radians)
+static Eigen::MatrixBase<Derived> radToDeg(const Eigen::MatrixBase<Derived> radians)
 {
-  return Eigen::MatrixBase<Derived>(radToDeg(radians(0)), radToDeg(radians(1)),
-                                    radToDeg(radians(2)));
+  return Eigen::MatrixBase<Derived>(radToDeg(radians(0)), radToDeg(radians(1)), radToDeg(radians(2)));
 }
 
 // deg vector
 template <class Derived>
-static Eigen::MatrixBase<Derived>
-deg2rag(const Eigen::MatrixBase<Derived> degrees)
+static Eigen::MatrixBase<Derived> deg2rag(const Eigen::MatrixBase<Derived> degrees)
 {
   return Eigen::MatrixBase<Derived>(deg2rad(degrees(0)), deg2rad(degrees(1)), deg2rad(degrees(2)));
 }
 
 //???
 template <typename Derived>
-static Eigen::Matrix<typename Derived::Scalar, 4, 4>
-Qleft(const Eigen::QuaternionBase<Derived> &q)
+static Eigen::Matrix<typename Derived::Scalar, 4, 4> Qleft(const Eigen::QuaternionBase<Derived> &q)
 {
   Eigen::Quaternion<typename Derived::Scalar> qq = positify(q);
   Eigen::Matrix<typename Derived::Scalar, 4, 4> ans;
@@ -307,16 +299,13 @@ Qleft(const Eigen::QuaternionBase<Derived> &q)
 }
 
 template <typename Derived>
-static Eigen::Matrix<typename Derived::Scalar, 4, 4>
-Qright(const Eigen::QuaternionBase<Derived> &p)
+static Eigen::Matrix<typename Derived::Scalar, 4, 4> Qright(const Eigen::QuaternionBase<Derived> &p)
 {
   Eigen::Quaternion<typename Derived::Scalar> pp = positify(p);
   Eigen::Matrix<typename Derived::Scalar, 4, 4> ans;
   ans(0, 0) = pp.w(), ans.template block<1, 3>(0, 1) = -pp.vec().transpose();
-  ans.template block<3, 1>(
-      1, 0) = pp.vec(),
-         ans.template block<3, 3>(1, 1) =
-             pp.w() * Eigen::Matrix<typename Derived::Scalar, 3, 3>::Identity() - skew(pp.vec());
+  ans.template block<3, 1>(1, 0) = pp.vec();
+  ans.template block<3, 3>(1, 1) = pp.w() * Eigen::Matrix<typename Derived::Scalar, 3, 3>::Identity() - skew(pp.vec());
   return ans;
   /****************
   ans =
@@ -329,8 +318,7 @@ Qright(const Eigen::QuaternionBase<Derived> &p)
 
 //???
 template <typename Derived>
-static Eigen::Matrix<typename Derived::Scalar, 3, 3>
-Rleft(const Eigen::MatrixBase<Derived> axis)
+static Eigen::Matrix<typename Derived::Scalar, 3, 3> Rleft(const Eigen::MatrixBase<Derived> axis)
 {
   typedef typename Derived::Scalar Scalar_t;
   Eigen::Matrix<Scalar_t, 3, 3> ans;
@@ -380,6 +368,7 @@ struct LineModel
 {
   double a = 0, b = 0, c = 0, x = 0, y = 0, z = 0;
 };
+
 int transformLine(const LineModel &model_in, LineModel &model_out, const Eigen::Affine3d &pose);
 
 struct PlaneModel
@@ -388,6 +377,7 @@ struct PlaneModel
 };
 
 int transformPlane(const PlaneModel &model_in, PlaneModel &model_out, const Eigen::Affine3d &pose);
+
 } // namespace bmath
 
 #endif
