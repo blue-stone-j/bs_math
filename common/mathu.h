@@ -130,7 +130,7 @@ static Eigen::Quaternion<Scarlar> vec2Quat(const Eigen::Matrix<Scarlar, 3, 1> &v
     return q;
   }
 
-  Eigen::Matrix<S2, 3, 1> tmp = vec / theta;
+  Eigen::Matrix<Scarlar, 3, 1> tmp = vec / theta;
   return axis2Quat(tmp, theta);
 }
 
