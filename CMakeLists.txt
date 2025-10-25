@@ -73,6 +73,10 @@ foreach(sub_element ${sub_elements})
     endif()
 endforeach()
 
+add_executable(circle_tangent_planes app/circle_tangent_planes.cpp)
+target_include_directories(circle_tangent_planes PUBLIC ${EIGEN3_INCLUDE_DIRS})
+
+
 include(cmake/global_definition.cmake)
 
 include(cmake/install_files.cmake)

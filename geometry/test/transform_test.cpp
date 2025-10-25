@@ -3,7 +3,7 @@
 
 #include "geometry/transform/transform.h"
 
-TEST(triangle_test, test1)
+TEST(transform_test, test1)
 {
   Eigen::Vector3d v1_raw(0.37, -0.02, 0.92);
   Eigen::Vector3d v2_raw(0.33, 0.03, 1.0);

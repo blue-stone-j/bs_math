@@ -52,3 +52,5 @@ echo -e "${GREEN}Build completed.${NC}"
 
 echo -e "${GREEN}All tasks have been done.${NC}"
 
+# some application
+./circle_tangent_planes
