@@ -76,6 +76,8 @@ endforeach()
 add_executable(circle_tangent_planes app/circle_tangent_planes.cpp)
 target_include_directories(circle_tangent_planes PUBLIC ${EIGEN3_INCLUDE_DIRS})
 
+add_executable(intersection_line_plane app/intersection_line_plane.cpp)
+target_include_directories(intersection_line_plane PUBLIC ${EIGEN3_INCLUDE_DIRS})
 
 include(cmake/global_definition.cmake)
 
